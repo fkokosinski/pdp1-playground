@@ -1,0 +1,37 @@
+name: PDP-1 Playground
+on: [push]
+jobs:
+  Test-Toolchain:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pdp1-playground 
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git build-essential flex bison texinfo libgmp3-dev libmpfr-dev libmpc-dev simh dejagnu
+
+      - name: Build binutils-gdb for PDP-1
+        run: |
+          cd pdp1-binutils
+          ./configure --target=pdp1-elf --disable-sim
+          make -j $(nproc)
+          sudo make install
+
+      - name: Build gcc for PDP-1
+        run: |
+          cd pdp1-gcc
+          ./configure --target=pdp1-elf --enable-languages=c --disable-bootstrap
+          make -j $(nproc) all-gcc
+
+      - name: Build samples
+        run: |
+          for sample in asm-*; do make -C $sample clean main.rim; done
+          for sample in c-*; do make -C $sample clean main.s main.rim; done
+
+      - name: Run tests
+        run: |
+          runtest --srcdir $(pwd)

@@ -1,0 +1,8 @@
+[submodule "pdp1-binutils"]
+	path = pdp1-binutils
+	url = https://github.com/fkokosinski/binutils-gdb.git
+	branch = pdp1
+[submodule "pdp1-gcc"]
+	path = pdp1-gcc
+	url = https://github.com/fkokosinski/gcc.git
+	branch = pdp1
