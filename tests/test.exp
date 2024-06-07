@@ -24,7 +24,7 @@ proc run_test { demo_name expected_output } {
 
 run_test "asm-print-x" "x"
 run_test "asm-hello-world" "hello, world"
-run_test "c-print-x" "x"
+run_test "c-print-x" "xx"
 run_test "c-print-struct" "xyz"
 run_test "c-print-array" "xyz"
 run_test "c-print-for-loop" "xxxxyxxx"

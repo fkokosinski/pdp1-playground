@@ -2,7 +2,7 @@
 
 .section .data
 i:
-	.byte 0
+	.skip 1, 0
 ptr:
 	.byte str
 len:
