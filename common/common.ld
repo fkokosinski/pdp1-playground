@@ -8,12 +8,12 @@ MEMORY
 
 SECTIONS
 {
-	.text :
+	.text 0x12c :
 	{
 		*(.text)
 	} > ram
 
-	.data 0x400 :
+	.data :
 	{
 		*(.data)
 	} > ram
