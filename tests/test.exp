@@ -4,19 +4,19 @@ proc run_test { demo_name expected_output } {
 	spawn "pdp1"
 	send "attach ptr $demo_name/main.rim\n"
 	expect {
-		"PTR: creating new file"	{ fail "Didn't find the RIM tape file\n" }
-		"sim>"				{ pass "Successfully loaded the RIM tape file\n" }
-		default				{ fail "Test failed unexpectedly\n" }
+		"PTR: creating new file"	{ fail "$demo_name: Didn't find the RIM tape file\n" }
+		"sim>"				{ pass "$demo_name: Successfully loaded the RIM tape file\n" }
+		default				{ fail "$demo_name: Test failed unexpectedly\n" }
 	}
 	
 	send "boot ptr\n"
 	expect {
-		"$expected_output"		{ pass "Encountered expected output\n" }
-		default				{ fail "Didn't encounter expected output\n" }
+		"$expected_output"		{ pass "$demo_name: Encountered expected output\n" }
+		default				{ fail "$demo_name: Didn't encounter expected output\n" }
 	}
 	expect {
-		-re "HALT instruction,.*"	{ pass "Program finished running normally\n" }
-		default				{ fail "Program halted unexpectedly\n" }
+		-re "HALT instruction,.*"	{ pass "$demo_name: Program finished running normally\n" }
+		default				{ fail "$demo_name: Program halted unexpectedly\n" }
 	}
 
 	send "quit\n"
@@ -29,3 +29,4 @@ run_test "c-print-struct" "xyz"
 run_test "c-print-array" "xyzxyzxyzxyz"
 run_test "c-print-for-loop" "xxxxyxxx"
 run_test "c-test-comparison" "aceg"
+run_test "c-test-arith" "xx"
