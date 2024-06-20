@@ -1,3 +1,4 @@
+set cpu mdv
 att ptr main.rim
 boot ptr
 quit
