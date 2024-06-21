@@ -4,3 +4,4 @@
 *.s
 *.log
 *.sum
+build-gcc/

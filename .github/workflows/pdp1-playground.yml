@@ -23,8 +23,10 @@ jobs:
 
       - name: Build gcc for PDP-1
         run: |
-          cd pdp1-gcc
-          ./configure --target=pdp1-elf --enable-languages=c --disable-bootstrap
+          # gcc doesn't support running `./configure` in the source directory
+          mkdir -p build-gcc
+          cd build-gcc
+          ../pdp1-gcc/configure --target=pdp1-elf --enable-languages=c --disable-bootstrap
           make -j $(nproc) all-gcc
 
       - name: Build samples

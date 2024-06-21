@@ -15,8 +15,9 @@ sudo make install
 
 ## Building gcc
 ```
-cd pdp1-gcc
-./configure --target=pdp1-elf --enable-languages=c --disable-bootstrap
+mkdir -p build-gcc
+cd build-gcc
+../pdp1-gcc/configure --target=pdp1-elf --enable-languages=c --disable-bootstrap
 make -j $(nproc) all-gcc
 ```
 

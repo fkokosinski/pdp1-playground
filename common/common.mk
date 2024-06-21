@@ -6,7 +6,7 @@ objects :=	$(objects-asm) $(objects-c)
 default: $(APP_NAME).rim
 
 %.s: %.c
-	../pdp1-gcc/host-x86_64-pc-linux-gnu/gcc/cc1 $<
+	../build-gcc/gcc/cc1 $<
 
 %.o: %.S
 	pdp1-elf-as $< -o $@
