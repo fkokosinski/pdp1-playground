@@ -5,6 +5,7 @@ void _start(void)
 {
 	asm ("law 04000");
 	asm ("dac 209");
+	asm ("law 03000");
 	asm ("dac 208");
 
 	int c;
