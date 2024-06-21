@@ -1,4 +1,5 @@
 APP_NAME ?=	main
+CCFLAGS ?=	-O0
 objects-asm :=	$(patsubst %.S,%.o,$(wildcard *.S)) 
 objects-c :=	$(patsubst %.c,%.o,$(wildcard *.c)) 
 objects :=	$(objects-asm) $(objects-c)
@@ -6,7 +7,7 @@ objects :=	$(objects-asm) $(objects-c)
 default: $(APP_NAME).rim
 
 %.s: %.c
-	../build-gcc/gcc/cc1 $<
+	../build-gcc/gcc/cc1 $(CCFLAGS) $<
 
 %.o: %.S
 	pdp1-elf-as $< -o $@

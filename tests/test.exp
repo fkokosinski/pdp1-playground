@@ -2,6 +2,7 @@ set timeout 1
 
 proc run_test { demo_name expected_output } {
 	spawn "pdp1"
+	send "set cpu mdv\n"
 	send "attach ptr $demo_name/main.rim\n"
 	expect {
 		"PTR: creating new file"	{ fail "$demo_name: Didn't find the RIM tape file\n" }
@@ -31,3 +32,4 @@ run_test "c-print-for-loop" "xxxxyxxx"
 run_test "c-test-comparison" "aceg"
 run_test "c-test-arith" "xx"
 run_test "c-test-recursion" "xxxxxxxxxxxxxxxxxxxx"
+run_test "c-print-fibonacci" "0,1,1,2,3,5,8,31,12,43,55,98,441,332,773,016,789,7951,4852,1814,"
