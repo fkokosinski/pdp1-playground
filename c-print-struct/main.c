@@ -8,9 +8,10 @@ static struct {
 
 void _start(void)
 {
-	asm ("law 04000");
-	asm ("dac 209");
-	asm ("dac 208");
+	asm volatile ("law 04000");
+	asm volatile ("dac 0131");
+	asm volatile ("law 03000");
+	asm volatile ("dac 0130");
 
 	x.field1 = 027;
 	x.field2 = 030;
@@ -26,6 +27,6 @@ void _start(void)
 }
 
 static void putc(int c) {
-	asm ("lio %0" : : "r"(c));
-	asm ("tyo");
+	asm volatile ("lio %0" : : "r"(c) : "$io");
+	asm volatile ("tyo");
 }

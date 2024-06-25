@@ -3,10 +3,10 @@ static int get_char(int);
 
 void _start(void)
 {
-	asm ("law 04000");
-	asm ("dac 209");
-	asm ("law 03000");
-	asm ("dac 208");
+	asm volatile ("law 04000");
+	asm volatile ("dac 0131");
+	asm volatile ("law 03000");
+	asm volatile ("dac 0130");
 
 	int c;
 
@@ -15,13 +15,13 @@ void _start(void)
 		putc(c);
 	}
 
-	asm ("hlt");
+	asm volatile ("hlt");
 	__builtin_unreachable();
 }
 
 static void putc(int c) {
-	asm ("lio %0" : : "r"(c));
-	asm ("tyo");
+	asm volatile ("lio %0" : : "r"(c) : "$io");
+	asm volatile ("tyo");
 }
 
 static int get_char(int c)

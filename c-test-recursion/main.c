@@ -5,20 +5,20 @@ static void foo(int);
 void _start(void)
 {
 	/* TODO: handle sp/fp init better -- separate crt0.S? */
-	asm ("law 03000");
-	asm ("dac 209");
-	asm ("law 04000");
-	asm ("dac 208");
+	asm volatile ("law 03000");
+	asm volatile ("dac 0131");
+	asm volatile ("law 04000");
+	asm volatile ("dac 0130");
 
 	foo(20);
 
-	asm ("hlt");
+	asm volatile ("hlt");
 	__builtin_unreachable();
 }
 
 static void putc() {
-	asm ("lio %0" :  : "r"(027) : "io");
-	asm ("tyo");
+	asm volatile ("lio %0" :  : "r"(027) : "$io");
+	asm volatile ("tyo");
 }
 
 static void foo(int n)

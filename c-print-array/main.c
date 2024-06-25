@@ -7,10 +7,10 @@ static int i = 0;
 void _start(void)
 {
 	/* TODO: handle sp/fp init better -- separate crt0.S? */
-	asm ("law 03000");
-	asm ("dac 209");
-	asm ("law 04000");
-	asm ("dac 208");
+	asm volatile ("law 03000");
+	asm volatile ("dac 0131");
+	asm volatile ("law 04000");
+	asm volatile ("dac 0130");
 	
 	/* check with no iterators */
 	putc(x[0]);
@@ -23,19 +23,19 @@ void _start(void)
 
 	/* check with local iterator w/o func call */
 	for (int j = 0; j < 3; j++) {
-		asm ("lio %0" : : "r"(x[j]));
-		asm ("tyo");
+		asm volatile ("lio %0" : : "r"(x[j]) : "$io");
+		asm volatile ("tyo");
 	}
 
 	/* check with local iterator w/ func call */
 	for (int j = 0; j < 3; j++)
 		putc(x[j]);
 
-	asm ("hlt");
+	asm volatile ("hlt");
 	__builtin_unreachable();
 }
 
 static void putc(int c) {
-	asm ("lio %0" : : "r"(c));
-	asm ("tyo");
+	asm volatile ("lio %0" : : "r"(c) : "$io");
+	asm volatile ("tyo");
 }

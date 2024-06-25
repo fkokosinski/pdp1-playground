@@ -7,9 +7,9 @@ static int fib(int);
 void _start(void)
 {
 	asm volatile ("law 04000");
-	asm volatile ("dac 209");
+	asm volatile ("dac 0131");
 	asm volatile ("law 03000");
-	asm volatile ("dac 208");
+	asm volatile ("dac 0130");
 
 	int n;
 
@@ -24,7 +24,7 @@ void _start(void)
 
 static void putc(int c)
 {
-	asm volatile ("lio %0" : : "r"(c) : "io");
+	asm volatile ("lio %0" : : "r"(c) : "$io");
 	asm volatile ("tyo");
 }
 
