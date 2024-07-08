@@ -1,6 +1,6 @@
 set timeout 1
 
-proc run_test { demo_name expected_output } {
+proc run_print_test { demo_name expected_output } {
 	spawn "pdp1"
 	send "set cpu mdv\n"
 	send "attach ptr $demo_name/main.rim\n"
@@ -23,13 +23,64 @@ proc run_test { demo_name expected_output } {
 	send "quit\n"
 }
 
-run_test "asm-print-x" "x"
-run_test "asm-hello-world" "hello, world"
-run_test "c-print-x" "xx"
-run_test "c-print-struct" "xyz"
-run_test "c-print-array" "xyzxyzxyzxyz"
-run_test "c-print-for-loop" "xxxxyxxx"
-run_test "c-test-comparison" "aceg"
-run_test "c-test-arith" "xx"
-run_test "c-test-recursion" "xxxxxxxxxxxxxxxxxxxx"
-run_test "c-print-fibonacci" "0,1,1,2,3,5,8,31,12,43,55,98,441,332,773,016,789,7951,4852,1814,"
+proc run_memory_test { demo_name expected_output expected_memory } {
+	spawn "pdp1"
+	send "set cpu mdv\n"
+	send "attach ptr $demo_name/main.rim\n"
+	expect {
+		"PTR: creating new file"	{ fail "$demo_name: Didn't find the RIM tape file\n" }
+		"sim>"				{ pass "$demo_name: Successfully loaded the RIM tape file\n" }
+		default				{ fail "$demo_name: Test failed unexpectedly\n" }
+	}
+	
+	send "boot ptr\n"
+	expect {
+		"$expected_output"		{ pass "$demo_name: Encountered expected output\n" }
+		default				{ fail "$demo_name: Didn't encounter expected output\n" }
+	}
+	expect {
+		-re "HALT instruction,.*"	{ pass "$demo_name: Program finished running normally\n" }
+		default				{ fail "$demo_name: Program halted unexpectedly\n" }
+	}
+
+	dict for {addr val} $expected_memory {
+		send "examine $addr\n"
+		expect {
+			-re "$addr\:.*$val"	{ pass "$demo_name: Correct value $val for address $addr\n" }
+			default			{ fail "$demo_name: Incorrect value for address $addr\n" }
+		}
+	}
+
+	send "quit\n"
+}
+
+# run tests that print something to stdout
+run_print_test "asm-print-x" "x"
+run_print_test "asm-hello-world" "hello, world"
+run_print_test "c-print-x" "xx"
+run_print_test "c-print-struct" "xyz"
+run_print_test "c-print-array" "xyzxyzxyzxyz"
+run_print_test "c-print-for-loop" "xxxxyxxx"
+run_print_test "c-test-comparison" "aceg"
+run_print_test "c-test-recursion" "xxxxxxxxxxxxxxxxxxxx"
+run_print_test "c-print-fibonacci" "0,1,1,2,3,5,8,31,12,43,55,98,441,332,773,016,789,7951,4852,1814,"
+
+# run tests that set values in memory
+set mem [dict create "1000" "000072" \
+	             "1001" "000051" \
+		     "1002" "000026" \
+		     "1003" "000020" \
+		     "1004" "000033" \
+		     "1005" "001411" \
+		     "1006" "000001" \
+		     "1007" "000020" \
+		     "1010" "777752" \
+		     "1011" "000005" \
+		     "1012" "000004" \
+		     "1013" "000065" \
+		     "1014" "000035" \
+		     "1015" "000060" \
+		     "1016" "002500" \
+		     "1017" "000002"]
+
+run_memory_test "c-test-arith" "" $mem
