@@ -1,22 +1,14 @@
 static void putc(int);
 static int get_char(int);
 
-void _start(void)
+void main(void)
 {
-	asm volatile ("law 04000");
-	asm volatile ("dac 0131");
-	asm volatile ("law 03000");
-	asm volatile ("dac 0130");
-
 	int c;
 
 	for (int i = 0; i != 8; i++) {
 		c = get_char(i);
 		putc(c);
 	}
-
-	asm volatile ("hlt");
-	__builtin_unreachable();
 }
 
 static void putc(int c) {

@@ -17,8 +17,9 @@ sudo make install
 ```
 mkdir -p build-gcc
 cd build-gcc
-../pdp1-gcc/configure --target=pdp1-elf --enable-languages=c --disable-bootstrap
+../pdp1-gcc/configure --target=pdp1-elf --enable-languages=c --disable-bootstrap --enable-gcov=no --enable-shared=no
 make -j $(nproc) all-gcc
+make -j $(nproc) all-target-libgcc
 ```
 
 ## Building and running samples

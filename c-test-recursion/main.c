@@ -2,18 +2,9 @@ static void putc();
 
 static void foo(int);
 
-void _start(void)
+void main(void)
 {
-	/* TODO: handle sp/fp init better -- separate crt0.S? */
-	asm volatile ("law 03000");
-	asm volatile ("dac 0131");
-	asm volatile ("law 04000");
-	asm volatile ("dac 0130");
-
 	foo(20);
-
-	asm volatile ("hlt");
-	__builtin_unreachable();
 }
 
 static void putc() {

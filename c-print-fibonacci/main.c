@@ -4,22 +4,14 @@ static int fib(int);
 
 /* TODO: this sample fails to compile on higher -O values */
 
-void _start(void)
+void main(void)
 {
-	asm volatile ("law 04000");
-	asm volatile ("dac 0131");
-	asm volatile ("law 03000");
-	asm volatile ("dac 0130");
-
 	int n;
 
 	for (int i = 0; i < 20; i++) {
 		puti(fib(i));
 		putc(033);
 	}
-
-	asm volatile ("hlt");
-	__builtin_unreachable();
 }
 
 static void putc(int c)

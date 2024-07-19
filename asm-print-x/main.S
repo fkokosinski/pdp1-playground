@@ -6,8 +6,8 @@ x:
 	.byte 027
 
 .section .text
-.global _start
-_start:
+.global main
+main:
 	/* load IO register with *x */
 	lio x
 	tyo

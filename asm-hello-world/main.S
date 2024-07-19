@@ -24,8 +24,8 @@ str:
 end:
 
 .section .text
-.global _start
-_start:
+.global main
+main:
 	/* load IO register with *ptr and print it */
 	lio.i ptr
 	tyo
@@ -34,10 +34,10 @@ _start:
 	idx ptr
 	idx i
 
-	/* if (i == len) goto _start */
+	/* if (i == len) goto main */
 	lac i
 	sas len
-	jmp _start
+	jmp main
 
 	/* halt */
 	hlt
