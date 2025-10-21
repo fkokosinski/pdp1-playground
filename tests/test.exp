@@ -64,6 +64,7 @@ run_print_test "c-print-for-loop" "xxxxyxxx"
 run_print_test "c-test-comparison" "aceg"
 run_print_test "c-test-recursion" "xxxxxxxxxxxxxxxxxxxx"
 run_print_test "c-print-fibonacci" "0,1,1,2,3,5,8,31,12,43,55,98,441,332,773,016,789,7951,4852,1814,"
+run_print_test "c-test-string" "same"
 
 # run tests that set values in memory
 set mem [dict create "2000" "000072" \
