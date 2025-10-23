@@ -4,13 +4,22 @@ static int fib(int);
 
 /* TODO: this sample fails to compile on higher -O values */
 
+#define F_DIGITS	20
+#define LCOMMA		033
+#define SPACE		0
+#define LZERO		020
+#define LMINUS		054
+
 void main(void)
 {
 	int n;
 
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < F_DIGITS ; i++) {
 		puti(fib(i));
-		putc(033);
+		if (i < F_DIGITS - 1) {
+			putc(LCOMMA);
+			putc(SPACE);
+		}
 	}
 }
 
@@ -20,16 +29,33 @@ static void putc(int c)
 	asm volatile ("tyo");
 }
 
-/* TODO: this is printing out digits in reverse order; fix it */
-static void puti(int i)
+static void puti(int num)
 {
-	int mod;
+	if (num == 0) {
+		putc(LZERO);
+		return;
+	}
 
-	do {
-		mod = i % 10;
-		putc((mod == 0) ? 020 : mod);
-		i /= 10;
-	} while (i != 0);
+	/* handle negative numbers */
+	if (num < 0) {
+		putc(LMINUS);
+		num = -num;
+	}
+
+	/* calculate how many digits */
+	int divisor = 1;
+	while (num / divisor >= 10)
+		divisor *= 10;
+
+	/* print digits from most sig to least sig */
+	while (divisor > 0) {
+		int digit = num / divisor;
+		/* 0 is non-ASCII */
+		putc((digit == 0) ? LZERO : digit);
+
+		num %= divisor;
+		divisor /= 10;
+	}
 }
 
 static int fib(int n)
